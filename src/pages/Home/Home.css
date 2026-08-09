@@ -1,0 +1,140 @@
+/* Hero */
+
+.home-page {
+  padding-top: 2rem;
+}
+
+.hero {
+  position: relative;
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  min-height: 620px;
+  color: #f5f3ee;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 80% 35%, #123d73 0, transparent 35%),
+    linear-gradient(135deg, #03060c 0%, #071426 55%, #020409 100%);
+}
+
+.hero::before {
+  position: absolute;
+  inset: 0;
+  content: "";
+  opacity: 0.18;
+  background-image:
+    linear-gradient(#3b82f6 1px, transparent 1px),
+    linear-gradient(90deg, #3b82f6 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: linear-gradient(to right, black, transparent 75%);
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  flex-direction: column;
+  padding: clamp(2rem, 6vw, 5rem);
+}
+
+.eyebrow {
+  margin-bottom: 1rem;
+  color: #8a8a8a;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.hero h1 {
+  max-width: 600px;
+  margin-bottom: 1.5rem;
+  font-size: clamp(4rem, 9vw, 8rem);
+  line-height: 0.88;
+}
+
+.hero-description {
+  max-width: 430px;
+  margin-bottom: 2rem;
+  color: #c8c8c8;
+  font-size: 1.05rem;
+  line-height: 1.7;
+}
+
+.hero .eyebrow {
+  color: #60a5fa;
+}
+
+.primary-link {
+  display: inline-block;
+  padding: 1rem 1.5rem;
+  color: #ffffff;
+  font-weight: 700;
+  text-transform: uppercase;
+  background-color: #2563eb;
+}
+
+.hero .primary-link {
+  box-shadow: 0 0 24px rgb(37 99 235 / 35%);
+}
+
+.hero-image {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  min-height: 620px;
+  overflow: hidden;
+}
+
+.hero-image img {
+  width: min(72%, 520px);
+  height: auto;
+  object-fit: contain;
+  filter: hue-rotate(310deg) saturate(1.25)
+    drop-shadow(0 28px 45px rgb(37 99 235 / 35%));
+}
+
+/* Collection introduction */
+
+.collection-intro {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: end;
+  padding-block: 6rem;
+}
+
+.collection-intro h2 {
+  max-width: 650px;
+  margin-bottom: 0;
+  font-size: clamp(2.5rem, 6vw, 5rem);
+}
+
+.collection-intro > div:last-child {
+  max-width: 480px;
+}
+
+.collection-intro > div:last-child p {
+  margin-bottom: 2rem;
+  color: var(--muted-text);
+  line-height: 1.7;
+}
+
+/* Home responsive styles */
+
+@media (max-width: 760px) {
+  .hero {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-image {
+    min-height: 420px;
+  }
+
+  .collection-intro {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+}

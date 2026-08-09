@@ -4,13 +4,16 @@ import {
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import { doc, serverTimestamp, setDoc } from "firebase/firestore";
-import { auth, db } from "../firebase";
+import { auth, db } from "../../firebase";
+import "./Login.css";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
 
+  // Create an account with Firebase Authentication and save basic user data
+  // in a Firestore document that uses the user's unique ID.
   async function handleSignUp(event) {
     event.preventDefault();
 
@@ -31,6 +34,7 @@ function Login() {
     }
   }
 
+  // Ask Firebase Authentication to log in with the entered email and password.
   async function handleLogin(event) {
     event.preventDefault();
 
@@ -66,12 +70,12 @@ function Login() {
           required
         />
 
-        <div>
-          <button type="button" onClick={handleLogin}>
+        <div className="auth-actions">
+          <button className="blue-hover" type="button" onClick={handleLogin}>
             Log In
           </button>
 
-          <button type="button" onClick={handleSignUp}>
+          <button className="blue-hover" type="button" onClick={handleSignUp}>
             Sign Up
           </button>
         </div>

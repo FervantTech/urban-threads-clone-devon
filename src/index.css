@@ -1,11 +1,27 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap");
 
 :root {
+  --page-background: #f5f3ee;
+  --page-text: #161616;
+  --surface: #ffffff;
+  --surface-muted: #f5f3ee;
+  --muted-text: #666666;
+  --border: #dedcd5;
+
   font-family: "Inter", sans-serif;
-  color: #161616;
-  background-color: #f5f3ee;
+  color: var(--page-text);
+  background-color: var(--page-background);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
+}
+
+[data-theme="dark"] {
+  --page-background: #070b12;
+  --page-text: #f3f6fb;
+  --surface: #101827;
+  --surface-muted: #172235;
+  --muted-text: #a7b1c2;
+  --border: #29364a;
 }
 
 * {
@@ -20,6 +36,11 @@ body {
   min-width: 320px;
   min-height: 100vh;
   margin: 0;
+  color: var(--page-text);
+  background-color: var(--page-background);
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease;
 }
 
 h1,
@@ -53,6 +74,27 @@ button {
 img {
   display: block;
   max-width: 100%;
+}
+
+.material-symbols-sharp {
+  display: inline-block;
+  font-family: "Material Symbols Sharp";
+  font-weight: normal;
+  font-style: normal;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  font-variation-settings:
+    "FILL" 0,
+    "wght" 100,
+    "GRAD" -25,
+    "opsz" 24;
+  -webkit-font-feature-settings: "liga";
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: "liga";
 }
 
 main {

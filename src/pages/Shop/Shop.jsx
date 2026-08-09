@@ -1,14 +1,19 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { collection, getDocs } from "firebase/firestore";
-import { auth, db } from "../firebase";
+import { auth, db } from "../../firebase";
+import "./Shop.css";
+
+const categories = ["All", "Hoodies", "T-shirts", "Sneakers", "Accessories"];
 
 function Shop() {
   const [products, setProducts] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState("All");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
+  // Load all product documents from Firestore when the Shop page first opens.
   useEffect(() => {
     async function loadProducts() {
       try {
@@ -31,6 +36,8 @@ function Shop() {
     loadProducts();
   }, []);
 
+  // Add a product to the logged-in user's cart in localStorage.
+  // If the product is already there, increase its quantity instead.
   function handleAddToCart(product) {
     const user = auth.currentUser;
 
@@ -43,9 +50,7 @@ function Shop() {
     const cartKey = `cart-${user.uid}`;
     const savedCart = JSON.parse(localStorage.getItem(cartKey)) || [];
 
-    const existingProduct = savedCart.find(
-      (item) => item.id === product.id,
-    );
+    const existingProduct = savedCart.find((item) => item.id === product.id);
 
     if (existingProduct) {
       existingProduct.quantity += 1;
@@ -59,6 +64,12 @@ function Shop() {
     localStorage.setItem(cartKey, JSON.stringify(savedCart));
   }
 
+  // Show every product for "All", or only products in the selected category.
+  const filteredProducts =
+    selectedCategory === "All"
+      ? products
+      : products.filter((product) => product.category === selectedCategory);
+
   if (loading) {
     return <p>Loading products...</p>;
   }
@@ -71,8 +82,22 @@ function Shop() {
     <main>
       <h1>Shop</h1>
 
+      <div className="category-filters">
+        {categories.map((category) => (
+          <button
+            className={`blue-hover ${
+              selectedCategory === category ? "active" : ""
+            }`}
+            key={category}
+            onClick={() => setSelectedCategory(category)}
+          >
+            {category}
+          </button>
+        ))}
+      </div>
+
       <section className="product-grid">
-        {products.map((product) => (
+        {filteredProducts.map((product) => (
           <article className="product-card" key={product.id}>
             <img src={product.imageURL} alt={product.name} />
             <p>{product.category}</p>
@@ -80,7 +105,10 @@ function Shop() {
             <p>{product.description}</p>
             <strong>${Number(product.price).toFixed(2)}</strong>
 
-            <button onClick={() => handleAddToCart(product)}>
+            <button
+              className="blue-hover"
+              onClick={() => handleAddToCart(product)}
+            >
               Add to Cart
             </button>
           </article>

@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "../firebase";
+import { auth } from "../../firebase";
+import "./Cart.css";
 
 function Cart() {
   const [cart, setCart] = useState([]);
@@ -9,6 +10,8 @@ function Cart() {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
+  // Check the login state when the Cart page opens.
+  // Logged-out visitors go to Login; logged-in users get their saved cart.
   useEffect(() => {
     const stopListening = onAuthStateChanged(auth, (currentUser) => {
       if (!currentUser) {
@@ -19,8 +22,7 @@ function Cart() {
       setUser(currentUser);
 
       const cartKey = `cart-${currentUser.uid}`;
-      const savedCart =
-        JSON.parse(localStorage.getItem(cartKey)) || [];
+      const savedCart = JSON.parse(localStorage.getItem(cartKey)) || [];
 
       setCart(savedCart);
       setLoading(false);
@@ -29,29 +31,45 @@ function Cart() {
     return stopListening;
   }, [navigate]);
 
-function removeFromCart(productId) {
-  const updatedCart = cart
-    .map((product) => {
-      if (product.id === productId) {
-        return {
-          ...product,
-          quantity: product.quantity - 1,
-        };
-      }
+  // Reduce a product's quantity by one and remove it when it reaches zero.
+  function removeFromCart(productId) {
+    const updatedCart = cart
+      .map((product) => {
+        if (product.id === productId) {
+          return {
+            ...product,
+            quantity: product.quantity - 1,
+          };
+        }
 
-      return product;
-    })
-    .filter((product) => product.quantity > 0);
+        return product;
+      })
+      .filter((product) => product.quantity > 0);
 
-  setCart(updatedCart);
+    setCart(updatedCart);
 
-  const cartKey = `cart-${user.uid}`;
-  localStorage.setItem(cartKey, JSON.stringify(updatedCart));
-}
+    const cartKey = `cart-${user.uid}`;
+    localStorage.setItem(cartKey, JSON.stringify(updatedCart));
+  }
 
+  // Simulate placing an order by asking for confirmation and clearing the cart.
+  function handleCheckout() {
+    const confirmed = window.confirm(
+      `Confirm your order total of $${totalPrice.toFixed(2)}?`,
+    );
+
+    if (!confirmed) {
+      return;
+    }
+
+    const cartKey = `cart-${user.uid}`;
+    localStorage.removeItem(cartKey);
+    setCart([]);
+  }
+
+  // Add each product's price multiplied by its quantity to get the order total.
   const totalPrice = cart.reduce(
-    (total, product) =>
-      total + Number(product.price) * product.quantity,
+    (total, product) => total + Number(product.price) * product.quantity,
     0,
   );
 
@@ -59,14 +77,14 @@ function removeFromCart(productId) {
     return <p>Loading cart...</p>;
   }
 
-    return (
+  return (
     <main className="cart-page">
       <h1>Shopping Cart</h1>
 
       {cart.length === 0 ? (
         <div className="empty-cart">
           <p>Your cart is empty.</p>
-          <button onClick={() => navigate("/shop")}>
+          <button className="blue-hover" onClick={() => navigate("/shop")}>
             Continue Shopping
           </button>
         </div>
@@ -75,19 +93,15 @@ function removeFromCart(productId) {
           <section className="cart-list">
             {cart.map((product) => (
               <article className="cart-item" key={product.id}>
-                <img
-                  src={product.imageURL}
-                  alt={product.name}
-                />
+                <img src={product.imageURL} alt={product.name} />
 
                 <div className="cart-details">
                   <h2>{product.name}</h2>
                   <p>Quantity: {product.quantity}</p>
-                  <p>
-                    Price: ${Number(product.price).toFixed(2)}
-                  </p>
+                  <p>Price: ${Number(product.price).toFixed(2)}</p>
 
                   <button
+                    className="blue-hover"
                     onClick={() => removeFromCart(product.id)}
                   >
                     Remove One
@@ -100,7 +114,9 @@ function removeFromCart(productId) {
           <aside className="cart-summary">
             <p>Order summary</p>
             <h2>Total: ${totalPrice.toFixed(2)}</h2>
-            <button>Checkout</button>
+            <button className="blue-hover" onClick={handleCheckout}>
+              Checkout
+            </button>
           </aside>
         </div>
       )}

@@ -1,0 +1,72 @@
+/* Authentication page */
+
+.auth-page {
+  display: grid;
+  place-content: center;
+  min-height: calc(100vh - 72px);
+}
+
+.auth-page h1 {
+  margin-bottom: 2rem;
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  text-align: center;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  width: min(440px, 90vw);
+  padding: 2rem;
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+}
+
+.auth-form label {
+  margin-bottom: 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.auth-form input {
+  width: 100%;
+  margin-bottom: 1.4rem;
+  padding: 0.9rem 1rem;
+  color: var(--page-text);
+  background-color: var(--surface-muted);
+  border: 1px solid var(--border);
+  outline: none;
+}
+
+.auth-form input:focus {
+  border-color: var(--page-text);
+  box-shadow: 0 0 0 2px #3b82f6;
+}
+
+.auth-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.auth-actions button {
+  padding: 0.9rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  border: 1px solid var(--page-text);
+}
+
+.auth-actions button:first-child {
+  color: #ffffff;
+  background-color: #111111;
+}
+
+.auth-actions button:last-child {
+  color: #ffffff;
+  background-color: #2563eb;
+}
+
+.auth-page > p {
+  margin-top: 1rem;
+  text-align: center;
+}
